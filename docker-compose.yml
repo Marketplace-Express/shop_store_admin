@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  store-admin-fe:
+    image: marketplace_shop_store_admin
+    build:
+      context: .
+    command: php -S 0.0.0.0:8000 -t public/
+    volumes:
+      - .:/src
+      - /src/vendor
+    ports:
+      - "1005:8000"
+    environment:
+      - PHP_IDE_CONFIG=serverName=docker
+
+networks:
+  default:
+    external:
+      name: marketplace-network
