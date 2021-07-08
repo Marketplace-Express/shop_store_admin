@@ -16,9 +16,15 @@
 $router->group(['namespace' => 'Web'], function () use ($router) {
     $router->get('/login', 'AdminController@loginView');
     $router->post('/login', 'AdminController@login');
-    $router->post('/logout', 'AdminController@logout');
-    $router->group(['middleware' => ['auth', 'user.profile', 'user.permissions', 'user.hasStores']], function () use ($router) {
-        $router->get('/', 'AdminController@index');
-        $router->get('/new', 'AdminController@new');
+    $router->post('/logout', 'AdminController@logout')->name('logout');
+    $router->get('/logout', 'AdminController@logout')->name('logout');
+    $router->group(['middleware' => ['auth', 'user.profile', 'user.hasStores']], function () use ($router) {
+        $router->get('/stores', 'StoreController@getStores');
+        $router->get('/manageStore/{storeId}', 'StoreController@manageStore')->name('manage_store');
+        $router->get('/changeStore', 'StoreController@changeStore')->name('change_store');
+        $router->group(['middleware' => ['store.isSet', 'user.permissions']], function () use($router) {
+            $router->get('/', 'AdminController@index')->name('dashboard');
+            $router->get('/categories', 'CategoriesController@listView')->name('categories_list');
+        });
     });
 });

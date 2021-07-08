@@ -34,31 +34,27 @@ class RequestHelper
      */
     public function call($route, $method, $body = [], $headers = [], $query = [])
     {
-//        try {
-            $request = $this->client->request(
-                $method,
-                sprintf('%s%s', env('JURRY_BASE_API_URI'), $route),
-                [
-                    'headers' => $headers,
-                    'json' => $body,
-                    'query' => $query
-                ]
-            );
+        $request = $this->client->request(
+            $method,
+            sprintf('%s%s', env('JURRY_BASE_API_URI'), $route),
+            [
+                'headers' => $headers,
+                'json' => $body,
+                'query' => $query
+            ]
+        );
 
-            $result['status'] = $request->getStatusCode();
+        $result['status'] = $request->getStatusCode();
 
-            if (!empty($body = $request->getBody()->getContents())) {
-                $body = json_decode($body, true);
-            } else {
-                $body = null;
-            }
+        if (!empty($body = $request->getBody()->getContents())) {
+            $body = json_decode($body, true);
+        } else {
+            $body = null;
+        }
 
-            $result['message'] = $body;
+        $result['message'] = $body;
 
-            return $result;
-//        } catch (ClientException $exception) {
-//            $this->handleHttpException($exception);
-//        }
+        return $result;
     }
 
     /**

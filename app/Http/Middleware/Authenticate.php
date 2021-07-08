@@ -36,7 +36,8 @@ class Authenticate
      */
     public function handle(Request $request, \Closure $next)
     {
-        $isAuthenticated = $this->authService->isAuthenticate();
+        $isAuthenticated = $request->hasCookie('access_token') &&
+            $this->authService->isAuthenticated($request->cookie('access_token'));
 
         if (!$isAuthenticated) {
             if ($refreshToken = $request->cookie('refresh_token')) {

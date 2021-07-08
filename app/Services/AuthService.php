@@ -31,6 +31,7 @@ class AuthService
     /**
      * AuthService constructor.
      * @param RequestHelper $requestHelper
+     * @param Redis $redis
      */
     public function __construct(RequestHelper $requestHelper, Redis $redis)
     {
@@ -39,14 +40,11 @@ class AuthService
     }
 
     /**
+     * @param string $accessToken
      * @return bool
      */
-    public function isAuthenticate(): bool
+    public function isAuthenticated(string $accessToken): bool
     {
-        if (!$accessToken = request()->cookie('access_token')) {
-            return false;
-        }
-
         $userTokenData = json_decode($this->redis->get($accessToken));
 
         if (!$userTokenData) {
@@ -62,6 +60,9 @@ class AuthService
      * @param string $email
      * @param string $password
      * @return User
+     * @throws NotFound
+     * @throws OperationNotPermitted
+     * @throws \Exception
      */
     public function authenticate(string $email, string $password)
     {
@@ -75,16 +76,20 @@ class AuthService
                 throw new NotFound('Incorrect email or password');
             } elseif ($exception->getCode() == Response::HTTP_FORBIDDEN) {
                 throw new OperationNotPermitted('Access denied');
+            } else {
+                throw new \Exception('Operation failed', Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
 
+        $userTokenData = $userTokenData['message']['data'];
+
         $this->redis->set(
-            $userTokenData['message']['data']['access_token'],
-            json_encode($userTokenData['message']['data']),
-            strtotime($userTokenData['message']['data']['expires_at']) - time()
+            $userTokenData['access_token'],
+            json_encode($userTokenData),
+            strtotime($userTokenData['expires_at']) - time()
         );
 
-        return new User($userTokenData['message']['data']);
+        return new User($userTokenData);
     }
 
     /**

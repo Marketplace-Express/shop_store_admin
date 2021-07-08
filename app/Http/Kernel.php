@@ -28,7 +28,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
+            'encrypt_cookie',
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -38,7 +38,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'cors',
+            'encrypt_cookie',
+            'auth.api',
             'bindings',
         ],
     ];
@@ -53,12 +54,15 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.api' => \App\Http\Middleware\AuthenticateAPI::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'user.profile' => \App\Http\Middleware\UserProfile::class,
         'user.hasStores' => \App\Http\Middleware\HasStores::class,
-        'user.permissions' => \App\Http\Middleware\UserPermissions::class
+        'user.permissions' => \App\Http\Middleware\UserPermissions::class,
+        'store.isSet' => \App\Http\Middleware\StoreIsSet::class,
+        'encrypt_cookie' => \App\Http\Middleware\EncryptCookies::class,
     ];
 }

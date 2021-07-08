@@ -11,34 +11,12 @@
 |
 */
 
-Route::group(['namespace' => 'Api'], function () {
-
-    Route::post('users/login', 'AuthController@login');
-    Route::post('users', 'AuthController@register');
-
-    Route::get('user', 'UserController@index');
-    Route::match(['put', 'patch'], 'user', 'UserController@update');
-
-    Route::get('profiles/{user}', 'ProfileController@show');
-    Route::post('profiles/{user}/follow', 'ProfileController@follow');
-    Route::delete('profiles/{user}/follow', 'ProfileController@unFollow');
-
-    Route::get('articles/feed', 'FeedController@index');
-    Route::post('articles/{article}/favorite', 'FavoriteController@add');
-    Route::delete('articles/{article}/favorite', 'FavoriteController@remove');
-
-    Route::resource('articles', 'ArticleController', [
-        'except' => [
-            'create', 'edit'
-        ]
-    ]);
-
-    Route::resource('articles/{article}/comments', 'CommentController', [
-        'only' => [
-            'index', 'store', 'destroy'
-        ]
-    ]);
-
-    Route::get('tags', 'TagController@index');
-
+/**
+ * @var \Illuminate\Routing\Router $router
+ */
+$router->group(['namespace' => 'Api'], function () use ($router) {
+    $router->group([], function () use ($router) {
+        $router->get('/categories/fetch', 'CategoryController@fetch')->name('fetch_categories_api');
+        $router->post('/categories/updateOrder', 'CategoryController@updateOrder')->name('update_categories_order');
+    });
 });

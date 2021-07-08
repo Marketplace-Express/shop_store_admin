@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Diglactic\Breadcrumbs\ServiceProvider::class,
 
         /*
          * Application Service Providers...

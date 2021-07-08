@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -230,6 +230,11 @@ return [
             'topnav' => true,
         ],
         [
+            'text' => 'categories',
+            'url' => '/categories',
+            'icon' => 'far fa-fw fa-list-alt'
+        ],
+        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
@@ -344,12 +349,12 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => '//cdn.datatables.net/v/bs5/dt-1.10.25/rr-1.2.8/datatables.min.js',
                 ],
                 [
                     'type' => 'js',
@@ -359,7 +364,7 @@ return [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => '//cdn.datatables.net/v/bs5/dt-1.10.25/rr-1.2.8/datatables.min.css',
                 ],
             ],
         ],

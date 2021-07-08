@@ -43,13 +43,6 @@ class AdminController extends Controller
         ]);
     }
 
-    public function new()
-    {
-        return view('custom.new', [
-            'adminlte' => $this->adminLte
-        ]);
-    }
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -69,7 +62,7 @@ class AdminController extends Controller
             Cookie::queue('refresh_token', $user->refresh_token);
             Cookie::queue('csrf_token', $user->csrf_token);
 
-            return redirect($redirect ?: '/');
+            return redirect($redirect ?: '/stores');
         } catch (ValidationException $exception) {
             return back($exception->getCode())->withErrors($exception->errors());
         } catch (NotFound | OperationNotPermitted $exception) {
@@ -90,7 +83,8 @@ class AdminController extends Controller
             return redirect('/login')
                 ->withCookie(Cookie::forget('access_token'))
                 ->withCookie(Cookie::forget('refresh_token'))
-                ->withCookie(Cookie::forget('csrf_token'));
+                ->withCookie(Cookie::forget('csrf_token'))
+                ->withCookie(Cookie::forget('store_id'));
         } catch (\Throwable $exception) {
             return back()->withErrors(['error_msg' => $exception->getMessage()]);
         }

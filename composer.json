@@ -7,8 +7,9 @@
         "php": "^7.3",
         "ext-json": "*",
         "ext-redis": "*",
+        "diglactic/laravel-breadcrumbs": "^7.0",
         "guzzlehttp/guzzle": "^7.3",
-        "jeroennoten/laravel-adminlte": "dev-next",
+        "jeroennoten/laravel-adminlte": "^v3.6.1",
         "laravel/framework": "^8.12"
     },
     "require-dev": {

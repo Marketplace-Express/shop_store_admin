@@ -64,13 +64,6 @@ class HasStores
             );
         }
 
-
-        if (!is_array($userStores) || !count($userStores)) {
-            abort(401);
-        }
-
-        $request->merge(['user_stores' => $userStores]);
-
         return $next($request);
     }
 }
